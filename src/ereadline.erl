@@ -23,11 +23,13 @@ load_nif() ->
 %% Application API
 %% =============================================================================
 
-readline(String) ->
-    e_readline(erlang:iolist_size(String), String).
+readline(String) when is_list(String) ->
+    Str = lists:flatten(String),
+    e_readline(erlang:iolist_size(Str), Str).
 
-add_history(String) ->
-    e_add_history(erlang:iolist_size(String), String).
+add_history(String) when is_list(String) ->
+    Str = lists:flatten(String),
+    e_add_history(erlang:iolist_size(Str), Str).
 
 %% =============================================================================
 %% Internal functions
