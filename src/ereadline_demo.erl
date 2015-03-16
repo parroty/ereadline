@@ -14,5 +14,6 @@ read_inputs() ->
       "quit" -> ok;
       Line ->
           io:format("returned input = ~s~n", [Line]),
+          ereadline:add_history(Line),
           read_inputs()
     end.

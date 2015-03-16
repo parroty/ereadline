@@ -27,6 +27,7 @@ read_inputs() ->
       "quit" -> ok;
       Line ->
           io:format("returned input = ~s~n", [Line]),
+          ereadline:add_history(Line),
           read_inputs()
     end.
 ```
@@ -41,4 +42,4 @@ read_inputs() ->
 ```
 
 ## Notes
-- when `ctrl+D` is pressed in `ereadline:readline`, the function returns {error, "empty"}.
+- Use `ctrl+D` key for getting out of `ereadline:readline`. Then the function returns with `{error, "empty"}`.
