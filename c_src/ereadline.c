@@ -55,32 +55,30 @@ result_string(ErlNifEnv* env, char *string) {
 /* api functions */
 static ERL_NIF_TERM
 e_readline(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
-    enif_mutex_lock(g_lock);
-
     int length;
     enif_get_int(env, argv[0], &length);
-    char buf[length];
+    char buf[length + 1];
     enif_get_string(env, argv[1], buf, length + 1, ERL_NIF_LATIN1);
 
+    enif_mutex_lock(g_lock);
     char *str = readline(buf);
-
     enif_mutex_unlock(g_lock);
+
     return result_string(env, str);
 }
 
 // add_history
 static ERL_NIF_TERM
 e_add_history(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
-    enif_mutex_lock(g_lock);
-
     int length;
     enif_get_int(env, argv[0], &length);
-    char buf[length];
+    char buf[length + 1];
     enif_get_string(env, argv[1], buf, length + 1, ERL_NIF_LATIN1);
 
+    enif_mutex_lock(g_lock);
     int code = add_history(buf);
-
     enif_mutex_unlock(g_lock);
+
     return result_code(env, code);
 }
 

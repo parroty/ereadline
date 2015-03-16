@@ -1,6 +1,6 @@
-ereadline
+ereadline (WIP)
 =====
-A readline wrapper for Erlang.
+A readline wrapper for Erlang. It's prettty much work in progres and might not work.
 
 It has very limited functionality at the moment with the following functions.
 - readline
