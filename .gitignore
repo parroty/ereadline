@@ -6,3 +6,4 @@ ebin/*.app
 *.erl.swp
 *.c.swp
 *.h.swp
+_build

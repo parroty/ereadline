@@ -6,8 +6,6 @@
 #include "erl_nif.h"
 #include "ereadline.h"
 
-#define BUF_SIZE 1024
-
 static ErlNifMutex* g_lock = NULL;
 
 /* nif functions */
@@ -23,11 +21,6 @@ unload(ErlNifEnv* env, void* priv) {
         enif_mutex_destroy(g_lock);
     }
 }
-
-static ErlNifFunc nif_funcs[] = {
-    {"e_readline", 2, e_readline},
-    {"e_add_history", 2, e_add_history},
-};
 
 
 /* helper functions */
@@ -62,8 +55,8 @@ static ERL_NIF_TERM
 e_readline(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
     int length;
     enif_get_int(env, argv[0], &length);
-    char buf[BUF_SIZE];
-    if(enif_get_string(env, argv[1], buf, BUF_SIZE, ERL_NIF_LATIN1) < 1) {
+    char buf[length + 1];
+    if(enif_get_string(env, argv[1], buf, length + 1, ERL_NIF_LATIN1) < 1) {
         return enif_make_badarg(env);
     }
 
@@ -82,8 +75,8 @@ static ERL_NIF_TERM
 e_add_history(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
     int length;
     enif_get_int(env, argv[0], &length);
-    char buf[BUF_SIZE];
-    if(enif_get_string(env, argv[1], buf, BUF_SIZE, ERL_NIF_LATIN1) < 1) {
+    char buf[length + 1];
+    if(enif_get_string(env, argv[1], buf, length + 1, ERL_NIF_LATIN1) < 1) {
         return enif_make_badarg(env);
     }
 
@@ -94,5 +87,10 @@ e_add_history(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
     return result_code(env, code);
 }
 
+
+static ErlNifFunc nif_funcs[] = {
+    {"e_readline", 2, e_readline},
+    {"e_add_history", 2, e_add_history},
+};
 
 ERL_NIF_INIT(ereadline, nif_funcs, load, NULL, NULL, unload)
